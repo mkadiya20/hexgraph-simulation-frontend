@@ -14,6 +14,7 @@ export default function Hexgrid(this: any, props: any) {
     const hexagons: Hex[] = generator.apply(this, config.mapProps);
 
     let [type, setType] = useState<State>({hexagons, config});
+    let [mouseHold, setMouseHold] = useState(false);
 
     const changeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const map = event.currentTarget.value as keyof typeof configs;
@@ -23,8 +24,26 @@ export default function Hexgrid(this: any, props: any) {
         setType({hexagons, config});
     }
 
-    const handleClick = (event: React.MouseEvent<SVGGElement, MouseEvent>, hexID: string) => {
+    const onClick = (event: React.MouseEvent<SVGGElement, MouseEvent>, hexID: string) => {
         console.log(hexID);
+        console.log(event.currentTarget);
+    }
+
+    const onMouseDown = (event: React.MouseEvent<SVGGElement, MouseEvent>) => {
+      setMouseHold(true);
+      const hexagon = event.currentTarget;
+      hexagon.style.fill = 'black'
+    }
+
+    const onMouseUp = (event: React.MouseEvent<SVGGElement, MouseEvent>) => {
+      setMouseHold(false);
+    }
+
+    const onMouseEnter = (event: React.MouseEvent<SVGGElement, MouseEvent>) => {
+      const hexagon = event.currentTarget;
+      if (mouseHold) {
+        hexagon.style.fill = 'black'
+      }
     }
 
     useEffect(() => {
@@ -53,9 +72,14 @@ export default function Hexgrid(this: any, props: any) {
               // note: key must be unique between re-renders.
               // using config.mapProps+i makes a new key when the goal template chnages.
               state.hexagons.map((hex, i) => (
-                <Hexagon key={state.config.mapProps.toString() + i} q={hex.q} r={hex.r} s={hex.s}
-                    onClick={(event) => handleClick(event, HexUtils.getID(hex))}>
-                  {/* <Text>{HexUtils.getID(hex)}</Text> */}
+                <Hexagon 
+                    className='fill-white stroke-1 stroke-black hover:fill-slate-300'
+                    key={state.config.mapProps.toString() + i}
+                    q={hex.q} r={hex.r} s={hex.s}
+                    onClick={(event) => onClick(event, HexUtils.getID(hex))}
+                    onMouseDown={(e) => onMouseDown(e)}
+                    onMouseUp={(e) => onMouseUp(e)}
+                    onMouseEnter={(e) => onMouseEnter(e)}>
                 </Hexagon>
               ))
             }
