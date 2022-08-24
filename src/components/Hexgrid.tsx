@@ -25,6 +25,11 @@ export default function Hexgrid(this: any, props: any) {
 
     const handleClick = (event: React.MouseEvent<SVGGElement, MouseEvent>, hexID: string) => {
         console.log(hexID);
+        const coloredHexes = type.hexagons.map(hex => {
+          hex.props = hex.props || {};
+          // hex.props.className = 'bg-white';
+          return hex;
+        })
     }
 
     useEffect(() => {
@@ -35,6 +40,12 @@ export default function Hexgrid(this: any, props: any) {
     const state = type;
     const layout = state.config.layout;
     const size = { x: layout.width, y: layout.height };
+    const hexStyle = {
+        fill: 'white',
+        stroke: 'black',
+        'stroke-linejoin': 'round',
+        'stroke-width': '0.1px'
+    };
     return (
       <div className="App">
         <h2>Select grid type and configuration from dropdown.</h2>
@@ -53,9 +64,8 @@ export default function Hexgrid(this: any, props: any) {
               // note: key must be unique between re-renders.
               // using config.mapProps+i makes a new key when the goal template chnages.
               state.hexagons.map((hex, i) => (
-                <Hexagon key={state.config.mapProps.toString() + i} q={hex.q} r={hex.r} s={hex.s}
+                <Hexagon style={hexStyle} key={state.config.mapProps.toString() + i} q={hex.q} r={hex.r} s={hex.s}
                     onClick={(event) => handleClick(event, HexUtils.getID(hex))}>
-                  {/* <Text>{HexUtils.getID(hex)}</Text> */}
                 </Hexagon>
               ))
             }
