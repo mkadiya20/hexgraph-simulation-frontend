@@ -14,31 +14,10 @@ export default function Hexgrid(this: any, props: any) {
     const hexagons: Hex[] = generator.apply(this, config.mapProps);
 
     let [type, setType] = useState<State>({hexagons, config});
-    
-    let setConfig = (map: string) => {
-        switch(map) {
-            case 'hexagon':
-                return configs['hexagon'];
-            case 'triangle':
-                return configs['triangle'];
-            case 'parallelogram':
-                return configs['parallelogram']
-            case 'rectangle':
-                return configs['rectangle']
-            case 'orientedRectangle':
-                return configs['orientedRectangle']
-            // case 'ring':
-            //     return configs['ring']
-            // case 'spiral':
-            //     return configs['spiral']
-            default:
-                return configs['hexagon']
-        }
-    }
 
     const changeType = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const map = event.currentTarget.value;
-        const config = setConfig(map);
+        const map = event.currentTarget.value as keyof typeof configs;
+        const config = configs[map];
         const generator = GridGenerator.getGenerator(config.map);
         const hexagons: Hex[] = generator.apply(this, config.mapProps);
         setType({hexagons, config});
