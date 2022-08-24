@@ -47,7 +47,7 @@ jobs:
           username: ${{ secrets.AWS_EC2_USERNAME }}
           key: ${{ secrets.AWS_EC2_PEM }}
           port: 22
-          source: 'nginx.conf'
+          source: 'nginx/nginx.conf'
           target: './hexgraph/'
       
       - name: Configure AWS credentials
