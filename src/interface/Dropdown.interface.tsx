@@ -1,3 +1,6 @@
 export interface DropdownList {
-    optionList: string[]
+    itemList: string[],
+    showDropdown: boolean,
+    toggleDropdown: Function,
+    itemSelection: Function
 }

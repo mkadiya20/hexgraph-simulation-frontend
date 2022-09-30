@@ -1,14 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DropdownList } from '../interface/Dropdown.interface';
 
 export default function Dropdown(props: DropdownList) {
+    const [showDropdown, setShowDropDown] = useState<boolean>(false);
+    
+    const handleClick = (selection: string): void => {
+        props.itemSelection(selection);
+    }
+
+    useEffect(() => {
+        setShowDropDown(showDropdown);
+    }, [showDropdown]);
+
     return (
-        <div className='dropdown'>
-            <button
-        className="my-2 lg:my-0 w-30 p-1 text-blueGray-600 relative bg-white text-sm border border-blueGray300 outline-none shadow-lg rounded-lg flex flex-row items-center justify-between"
-            >
-            <p className="text-left whitespace-nowrap w-40 overflow-hidden text-ellipsis">Test</p>
-        </button>
+        <div className={"relative text-gray-800 border"}>
+            {props.itemList.map((item: string, index: number) => {
+                return (
+                    <p
+                    className="m-0"
+                    key={index}
+                    onClick={() => handleClick(item)}
+                    >{item}</p>
+                )
+            })}
         </div>
     )
 }
