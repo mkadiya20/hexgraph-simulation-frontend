@@ -80,4 +80,4 @@ jobs:
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG hexgraph-frontend
             docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker rmi $(docker images -f "dangling=true" -q)
-            docker run -d -p 80:80 --name hexgraph-frontend hexgraph-frontend
+            docker-compose up -d
