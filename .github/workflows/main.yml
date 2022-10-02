@@ -78,6 +78,6 @@ jobs:
             aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
             docker pull $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG hexgraph-frontend
-            # docker rmi $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+            docker rmi -f $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
             docker rmi $(docker images -f "dangling=true" -q)
-            docker run -d -p 80:80 --name hexgraph-frontend hexgraph-frontend
+            docker-compose up -d
